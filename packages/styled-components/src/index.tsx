@@ -6,7 +6,7 @@ import { domElements, DomElements } from "./utils/domElements";
 const reconcileStyles = (rawStyles, interpolations, props) => {
   const styles = rawStyles.reduce((acc, cur, idx) => {
     const interpolation = interpolations[idx - 1]
-    if (interpolation.name === 'StyledComponent') {
+    if (interpolation.styledComponentId) {
       return acc + `.${interpolation.styledComponentId}` + cur
     } else {
       return acc + interpolation(props) + cur
@@ -42,7 +42,7 @@ const combineClassNames = (className, uniqueClassName) => {
   }
 }
 
-const styled = (Tag: DomElements | ComponentType<any>) => (rawStyles: Array<string>, ...interpolations: Array<any>) => {
+const styled = (Tag: DomElements | ComponentType<any>) => (rawStyles, ...interpolations) => {
   const uniqueClassName = comeUpWithUniqueName();
   const StyledComponent = (props) => {
     const styles = reconcileStyles(rawStyles, interpolations, props)
